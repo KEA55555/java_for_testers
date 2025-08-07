@@ -6,7 +6,7 @@ public class ContactRemovalTests extends TestBase {
 
     @Test
     public void canContactRemove() {
-        openHomePage();
+        app.openHomePage();
         app.checkButtonEdit();
         app.removeContact();
     }

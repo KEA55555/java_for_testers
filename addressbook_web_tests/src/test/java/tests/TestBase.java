@@ -8,10 +8,6 @@ public class TestBase {
 
     protected static ApplicationManager app;
 
-    protected void openHomePage() {
-        ApplicationManager.driver.findElement(By.linkText("home")).click();
-    }
-
     @BeforeEach
     public void setUp() {
         if (app == null) {
