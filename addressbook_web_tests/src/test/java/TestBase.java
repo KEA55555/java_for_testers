@@ -17,6 +17,10 @@ public class TestBase {
         driver.findElement(By.linkText("group page")).click();
     }
 
+    protected static void openHomePage() {
+        driver.findElement(By.linkText("home")).click();
+    }
+
     @BeforeEach
     public void setUp() {
         if (driver == null) {
@@ -34,7 +38,7 @@ public class TestBase {
 
     protected boolean isElementPresent(By locator) {
         try {
-            driver.findElement(By.linkText("groups")).click();
+            driver.findElement(locator).click();
             return true;
         } catch (NoSuchElementException exception) {
             return false;
@@ -62,5 +66,34 @@ public class TestBase {
 
     protected boolean isGroupPresent() {
         return isElementPresent(By.name("selected[]"));
+    }
+
+    protected void createContact() {
+        driver.findElement(By.linkText("add new")).click();
+        driver.findElement(By.name("firstname")).click();
+        driver.findElement(By.name("firstname")).sendKeys("name");
+        driver.findElement(By.name("lastname")).click();
+        driver.findElement(By.name("lastname")).sendKeys("name2");
+        driver.findElement(By.name("address")).click();
+        driver.findElement(By.name("address")).sendKeys("address");
+        driver.findElement(By.name("home")).click();
+        driver.findElement(By.name("home")).sendKeys("8888");
+        driver.findElement(By.name("email")).click();
+        driver.findElement(By.name("email")).sendKeys("mail@mail.ru");
+        driver.findElement(By.name("theform")).click();
+        driver.findElement(By.cssSelector("input:nth-child(75)")).click();
+        driver.findElement(By.linkText("home page")).click();
+    }
+
+    protected void checkButtonEdit() {
+        if (!isElementPresent((By.cssSelector("tr:nth-child(2) > .center:nth-child(8) img")))) {
+            createContact();
+        }
+    }
+
+    protected void removeContact() {
+        driver.findElement(By.linkText("home")).click();
+        driver.findElement(By.cssSelector("tr:nth-child(2) > .center:nth-child(8) img")).click();
+        driver.findElement(By.cssSelector("input:nth-child(2)")).click();
     }
 }
