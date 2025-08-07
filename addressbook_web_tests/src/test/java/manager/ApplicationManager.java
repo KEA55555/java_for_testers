@@ -1,28 +1,17 @@
+package manager;
+
 import model.GroupData;
-import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class TestBase {
+public class ApplicationManager {
 
     protected static WebDriver driver;
 
-    protected static void removeGroup() {
-        driver.findElement(By.name("selected[]")).click();
-        driver.findElement(By.name("delete")).click();
-        driver.findElement(By.cssSelector(".msgbox")).click();
-        driver.findElement(By.linkText("group page")).click();
-    }
-
-    protected static void openHomePage() {
-        driver.findElement(By.linkText("home")).click();
-    }
-
-    @BeforeEach
-    public void setUp() {
+    public void init() {
         if (driver == null) {
             driver = new ChromeDriver();
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
@@ -33,10 +22,9 @@ public class TestBase {
             driver.findElement(By.name("pass")).sendKeys("secret");
             driver.findElement(By.cssSelector("input:nth-child(7)")).click();
         }
-
     }
 
-    protected boolean isElementPresent(By locator) {
+    public boolean isElementPresent(By locator) {
         try {
             driver.findElement(locator).click();
             return true;
@@ -45,7 +33,7 @@ public class TestBase {
         }
     }
 
-    protected void createGroup(GroupData group) {
+    public void createGroup(GroupData group) {
         driver.findElement(By.name("new")).click();
         driver.findElement(By.name("group_name")).click();
         driver.findElement(By.name("group_name")).sendKeys(group.name());
@@ -58,17 +46,24 @@ public class TestBase {
         driver.findElement(By.linkText("group page")).click();
     }
 
-    protected void openGroupsPage() {
+    public void openGroupsPage() {
         if (!isElementPresent(By.name("new"))) {
             driver.findElement(By.linkText("groups")).click();
         }
     }
 
-    protected boolean isGroupPresent() {
+    public boolean isGroupPresent() {
         return isElementPresent(By.name("selected[]"));
     }
 
-    protected void createContact() {
+    public void removeGroup() {
+        driver.findElement(By.name("selected[]")).click();
+        driver.findElement(By.name("delete")).click();
+        driver.findElement(By.cssSelector(".msgbox")).click();
+        driver.findElement(By.linkText("group page")).click();
+    }
+
+    public void createContact() {
         driver.findElement(By.linkText("add new")).click();
         driver.findElement(By.name("firstname")).click();
         driver.findElement(By.name("firstname")).sendKeys("name");
@@ -85,13 +80,13 @@ public class TestBase {
         driver.findElement(By.linkText("home page")).click();
     }
 
-    protected void checkButtonEdit() {
+    public void checkButtonEdit() {
         if (!isElementPresent((By.cssSelector("tr:nth-child(2) > .center:nth-child(8) img")))) {
             createContact();
         }
     }
 
-    protected void removeContact() {
+    public void removeContact() {
         driver.findElement(By.linkText("home")).click();
         driver.findElement(By.cssSelector("tr:nth-child(2) > .center:nth-child(8) img")).click();
         driver.findElement(By.cssSelector("input:nth-child(2)")).click();

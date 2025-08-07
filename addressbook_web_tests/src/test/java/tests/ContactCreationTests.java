@@ -1,14 +1,16 @@
+package tests;
+
 import org.junit.jupiter.api.Test;
 
 public class ContactCreationTests extends TestBase {
 
     @Test
     public void canContactCreate() {
-        createContact();
+        app.createContact();
     }
 
     @Test
     public void canContactCreateWithEmptyName() {
-        createContact();
+        app.createContact();
     }
 }
