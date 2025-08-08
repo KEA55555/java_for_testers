@@ -1,8 +1,6 @@
 package manager;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -15,8 +13,6 @@ public class ApplicationManager {
     private GroupHelper groups;
 
     private ContactHelper contact;
-
-    public HelperBase helperBase;
 
 
     public void init() {
@@ -48,21 +44,5 @@ public class ApplicationManager {
             contact = new ContactHelper(this);
         }
         return contact;
-    }
-
-    public HelperBase helperBase() {
-        if (helperBase == null) {
-            helperBase = new HelperBase(this);
-        }
-        return helperBase;
-    }
-
-    public boolean isElementPresent(By locator) {
-        try {
-            driver.findElement(locator).click();
-            return true;
-        } catch (NoSuchElementException exception) {
-            return false;
-        }
     }
 }
