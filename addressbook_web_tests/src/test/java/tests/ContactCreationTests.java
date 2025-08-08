@@ -6,11 +6,11 @@ public class ContactCreationTests extends TestBase {
 
     @Test
     public void canContactCreate() {
-        app.createContact();
+        app.contact().createContact();
     }
 
     @Test
     public void canContactCreateWithEmptyName() {
-        app.createContact();
+        app.contact().createContact();
     }
 }
