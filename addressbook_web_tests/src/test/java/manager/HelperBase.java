@@ -26,6 +26,7 @@ public class HelperBase {
 
     protected void type(By locator, String text) {
         if (text != null) {
+
             manager.driver.findElement(locator).clear();
             manager.driver.findElement(locator).sendKeys(text);
         }
