@@ -13,7 +13,7 @@ public class ApplicationManager {
 
     private GroupHelper groups;
 
-    private ContactHelper contact;
+    private ContactHelper contacts;
 
 
     public void init(String browser) {
@@ -46,10 +46,10 @@ public class ApplicationManager {
         return groups;
     }
 
-    public ContactHelper contact() {
-        if (contact == null) {
-            contact = new ContactHelper(this);
+    public ContactHelper contacts() {
+        if (contacts == null) {
+            contacts = new ContactHelper(this);
         }
-        return contact;
+        return contacts;
     }
 }

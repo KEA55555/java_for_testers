@@ -1,6 +1,7 @@
 package manager;
 
 
+import model.ContactData;
 import org.openqa.selenium.By;
 
 public class ContactHelper extends HelperBase {
@@ -13,7 +14,7 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home"));
     }
 
-    public void createContact() {
+    public void createContact(ContactData contact) {
         click(By.linkText("add new"));
         click(By.name("firstname"));
         type(By.name("firstname"), "name");
@@ -32,7 +33,8 @@ public class ContactHelper extends HelperBase {
 
     public void checkButtonEdit() {
         if (!isElementPresent((By.cssSelector("tr:nth-child(2) > .center:nth-child(8) img")))) {
-            createContact();
+            ContactData contact = new ContactData();
+            createContact(contact);
         }
     }
 
@@ -41,4 +43,26 @@ public class ContactHelper extends HelperBase {
         click(By.cssSelector("tr:nth-child(2) > .center:nth-child(8) img"));
         click(By.cssSelector("input:nth-child(2)"));
     }
-}
+
+    public int getCount() {
+        openHomePage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public void removeAllContacts() {
+        openHomePage();
+        selectAllContacts();
+        removeSelectedContacts();
+    }
+
+    private void removeSelectedContacts() {
+        click(By.cssSelector(".left:nth-child(8) > input"));
+    }
+
+    private void selectAllContacts() {
+        var checkboxes = manager.driver.findElements(By.id("MassCB"));
+        for (var selectAll : checkboxes) {
+            selectAll.click();
+        }
+    }
+    }

@@ -50,5 +50,3 @@ public class GroupCreationTests extends TestBase {
         Assertions.assertEquals(groupCount, newGroupCount);
     }
 }
-//попарное сочетание из 3 параметров каждый из к-рых принимает 2 значения
-//+ 5 случайно генерируемых + 1 негативный = 14 тестов
