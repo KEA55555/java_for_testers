@@ -34,22 +34,19 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home page"));
     }
 
-    public void checkButtonEdit() {
-        if (!isElementPresent((By.cssSelector("tr:nth-child(2) > .center:nth-child(8) img")))) {
-            ContactData contact = new ContactData();
-            createContact(contact);
-        }
+    public void initContactModification() {
+        click(By.cssSelector("img[title='Edit']"));
     }
 
     public void removeContact(ContactData contact) {
         openHomePage();
-        selectedContact(contact);
+        selectContactById(String.valueOf(contact));
         removeSelectedContacts();
         click(By.cssSelector("input:nth-child(2)"));
     }
 
-    private void selectedContact(ContactData contact) {
-        click(By.cssSelector(String.format("input[value='%s']", contact.id())));
+    private void selectContactById(String id) {
+        click(By.cssSelector("input[value='" + id + "']"));
     }
 
     public int getCount() {
@@ -77,10 +74,10 @@ public class ContactHelper extends HelperBase {
     public List<ContactData> getList() {
         openHomePage();
         var contacts = new ArrayList<ContactData>();
-        var trs = manager.driver.findElements(By.cssSelector("tr[name='entry']")); //row ряд
+        var trs = manager.driver.findElements(By.cssSelector("tr[name='entry']"));
 
         for (var tr : trs) {
-            var tds = tr.findElements(By.tagName("td")); //cells ячейки
+            var tds = tr.findElements(By.tagName("td"));
 
             if (tds.size() >= 3) {
                 var checkbox = tds.get(0).findElement(By.name("selected[]"));
@@ -94,5 +91,29 @@ public class ContactHelper extends HelperBase {
             }
         }
         return contacts;
+    }
+
+    public void modifyContact(ContactData contact, ContactData modifiedContact) {
+        openHomePage();
+        selectContactById(contact.id());
+        initContactModification();
+        fillContactForm(modifiedContact);
+        submitContactModification();
+        returnToHomePage();
+    }
+
+    private void returnToHomePage() {
+        click(By.linkText("home"));
+    }
+
+    private void submitContactModification() {
+        click(By.name("update"));
+    }
+
+    private void fillContactForm(ContactData contact) {
+        click(By.name("firstname"));
+        type(By.name("firstname"), contact.firstname());
+        click(By.name("lastname"));
+        type(By.name("lastname"), contact.lastname());
     }
 }
