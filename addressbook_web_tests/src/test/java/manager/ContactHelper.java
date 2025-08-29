@@ -93,9 +93,8 @@ public class ContactHelper extends HelperBase {
         return contacts;
     }
 
-    public void modifyContact(ContactData contact, ContactData modifiedContact) {
+    public void modifyContact(ContactData modifiedContact) {
         openHomePage();
-        selectContactById(contact.id());
         initContactModification();
         fillContactForm(modifiedContact);
         submitContactModification();
@@ -113,7 +112,5 @@ public class ContactHelper extends HelperBase {
     private void fillContactForm(ContactData contact) {
         click(By.name("firstname"));
         type(By.name("firstname"), contact.firstname());
-        click(By.name("lastname"));
-        type(By.name("lastname"), contact.lastname());
     }
 }
