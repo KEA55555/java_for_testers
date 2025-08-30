@@ -1,38 +1,43 @@
 package tests;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import ru.stqa.addressbook.common.CommonFunctions;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class ContactCreationTests extends TestBase {
 
-    public static List<ContactData> contactProvider() {
+    public static List<ContactData> contactProvider() throws IOException {
         var result = new ArrayList<ContactData>();
-        for (var firstname : List.of("", "contact firstname")) {
-            for (var lastname : List.of("", "contact lastname")) {
-                for (var address : List.of("", "contact address")) {
-                    for (var home : List.of("", "contact home")) {
-                        for (var email : List.of("", "contact email")) {
-                            result.add(new ContactData().withFirstName(firstname).withLastName(lastname).withAddress(address).withHome(home).withEmail(email));
-                        }
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < 5; i++) { //i++ - счетчик, инкремент, можно заменить на i = i + 1
-            result.add(new ContactData()
-                    .withFirstName(CommonFunctions.randomString(i * 5))
-                    .withLastName(CommonFunctions.randomString(i * 5))
-                    .withAddress(CommonFunctions.randomString(i * 5))
-                    .withHome(CommonFunctions.randomString(i * 5))
-                    .withEmail(CommonFunctions.randomString(i * 5)));
-        }
+//        for (var firstname : List.of("", "contact firstname")) {
+//            for (var lastname : List.of("", "contact lastname")) {
+//                for (var address : List.of("", "contact address")) {
+//                    for (var home : List.of("", "contact home")) {
+//                        for (var email : List.of("", "contact email")) {
+//                            result.add(new ContactData()
+//                                    .withFirstName(firstname)
+//                                    .withLastName(lastname)
+//                                    .withAddress(address)
+//                                    .withHome(home)
+//                                    .withEmail(email));
+//                        }
+//                    }
+//                }
+//            }
+//       }
+        var mapper = new XmlMapper();
+
+        var value = mapper.readValue(new File("contacts.xml"), new TypeReference<List<ContactData>>() {
+        });
+        result.addAll(value);
         return result;
     }
 

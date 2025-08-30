@@ -11,10 +11,12 @@ repositories {
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
     testImplementation'org.seleniumhq.selenium:selenium-java:4.34.0'
-    implementation'org.jcommander:jcommander:1.82'
+    implementation 'com.beust:jcommander:1.82'
     implementation'com.fasterxml.jackson.core:jackson-databind:2.19.0'
+    implementation'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.14.2'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.1'
 }
 
 test {
