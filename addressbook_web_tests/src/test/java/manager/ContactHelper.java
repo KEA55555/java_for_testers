@@ -34,8 +34,8 @@ public class ContactHelper extends HelperBase {
         click(By.linkText("home page"));
     }
 
-    public void initContactModification() {
-        click(By.cssSelector("img[title='Edit']"));
+    public void initContactModification(int index) {
+        click(By.cssSelector(String.format("tr:nth-child(%d) > .center:nth-child(8) img", index + 2)));
     }
 
     public void removeContact(ContactData contact) {
@@ -93,9 +93,9 @@ public class ContactHelper extends HelperBase {
         return contacts;
     }
 
-    public void modifyContact(ContactData modifiedContact) {
+    public void modifyContact(ContactData modifiedContact, int index) {
         openHomePage();
-        initContactModification();
+        initContactModification(index);
         fillContactForm(modifiedContact);
         submitContactModification();
         returnToHomePage();

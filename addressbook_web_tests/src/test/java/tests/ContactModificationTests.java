@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Random;
 
 public class ContactModificationTests extends TestBase {
 
@@ -16,9 +17,11 @@ public class ContactModificationTests extends TestBase {
                     "lastname", "address", "home", "email"));
         }
         var oldContacts = app.contacts().getList();
-        var editContact = oldContacts.get(0);
-        var testData = editContact.withFirstName("FirstName");
-        app.contacts().modifyContact(testData);
+        Random random = new Random();
+        int randomIndex = random.nextInt(oldContacts.size());
+        var editContact = oldContacts.get(randomIndex);
+        var testData = editContact.withFirstName("FirstName333333333");
+        app.contacts().modifyContact(testData, randomIndex);
         var newContacts = app.contacts().getList();
         var expectedList = new ArrayList<>(oldContacts);
         var index = expectedList.indexOf(editContact);
