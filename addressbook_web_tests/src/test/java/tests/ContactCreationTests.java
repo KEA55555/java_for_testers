@@ -4,6 +4,7 @@ import model.ContactData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import ru.stqa.addressbook.common.CommonFunctions;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,11 +27,11 @@ public class ContactCreationTests extends TestBase {
         }
         for (int i = 0; i < 5; i++) { //i++ - счетчик, инкремент, можно заменить на i = i + 1
             result.add(new ContactData()
-                    .withFirstName(randomString(i * 5))
-                    .withLastName(randomString(i * 5))
-                    .withAddress(randomString(i * 5))
-                    .withHome(randomString(i * 5))
-                    .withEmail(randomString(i * 5)));
+                    .withFirstName(CommonFunctions.randomString(i * 5))
+                    .withLastName(CommonFunctions.randomString(i * 5))
+                    .withAddress(CommonFunctions.randomString(i * 5))
+                    .withHome(CommonFunctions.randomString(i * 5))
+                    .withEmail(CommonFunctions.randomString(i * 5)));
         }
         return result;
     }
