@@ -53,9 +53,8 @@ public class ContactHelper extends HelperBase {
 
     public void removeContact(ContactData contact) {
         openHomePage();
-        selectContactById(String.valueOf(contact));
+        selectContactById(String.valueOf(contact.id()));
         removeSelectedContacts();
-        click(By.cssSelector("input:nth-child(2)"));
     }
 
     private void selectContactById(String id) {
@@ -71,6 +70,7 @@ public class ContactHelper extends HelperBase {
         openHomePage();
         selectAllContacts();
         removeSelectedContacts();
+        returnToHomePage();
     }
 
     private void removeSelectedContacts() {

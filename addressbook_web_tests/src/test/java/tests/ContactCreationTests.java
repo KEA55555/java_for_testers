@@ -46,12 +46,19 @@ public class ContactCreationTests extends TestBase {
         return result;
     }
 
+    public static List<ContactData> singleProviderContact() {
+        return List.of(new ContactData()
+                .withFirstName(CommonFunctions.randomString(10))
+                .withLastName(CommonFunctions.randomString(20))
+                .withAddress(CommonFunctions.randomString(30)));
+    }
+
     @ParameterizedTest
-    @MethodSource("contactProvider")
+    @MethodSource("singleProviderContact")
     public void canCreateMultipleContacts(ContactData contact) {
-        var oldContacts = app.contacts().getList();
+        var oldContacts = app.hbm().getContactList();
         app.contacts().createContact(contact);
-        var newContacts = app.contacts().getList();
+        var newContacts = app.hbm().getContactList();
         Comparator<ContactData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
