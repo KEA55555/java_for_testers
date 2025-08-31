@@ -3,15 +3,20 @@ package tests;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import ru.stqa.addressbook.common.CommonFunctions;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static ru.stqa.addressbook.common.CommonFunctions.randomFile;
 
 public class ContactCreationTests extends TestBase {
 
@@ -62,5 +67,32 @@ public class ContactCreationTests extends TestBase {
         expectedList.add(expectedContact);
         expectedList.sort(compareById);
         Assertions.assertEquals(newContacts, expectedList);
+    }
+
+    @Test
+     void canCreateContact() {
+        var contact = new ContactData()
+                .withFirstName(CommonFunctions.randomString(10))
+                .withLastName(CommonFunctions.randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        app.contacts().createContact(contact);
+    }
+
+    @Test
+    public void canCreateContactInGroup() {
+        var contact = new ContactData()
+                .withFirstName(CommonFunctions.randomString(10))
+                .withLastName(CommonFunctions.randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer")); //предусловие
+        }
+        var group = app.hbm().getGroupList().get(0);
+
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        app.contacts().createContact(contact, group);
+        var newRelated = app.hbm().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size()); //сделать более сложную проверку проверять не только размер, но и содержимое, ассерты не надо?
+        //как сравниваются полные списки групп и контактов после создания
     }
 }

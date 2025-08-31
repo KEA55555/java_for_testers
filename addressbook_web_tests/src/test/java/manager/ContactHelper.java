@@ -2,7 +2,9 @@ package manager;
 
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,20 +20,31 @@ public class ContactHelper extends HelperBase {
     }
 
     public void createContact(ContactData contact) {
+        initContactCreation();
+        fillContactForm(contact);
+        submitContactCreation();
+        returnToHomePage();
+    }
+
+    public void createContact(ContactData contact, GroupData group) {
+        initContactCreation();
+        fillContactForm(contact);
+        selectGroup(group);
+        submitContactCreation();
+        returnToHomePage();
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
+    }
+
+    public void initContactCreation() {
+        openHomePage();
         click(By.linkText("add new"));
-        click(By.name("firstname"));
-        type(By.name("firstname"), "name");
-        click(By.name("lastname"));
-        type(By.name("lastname"), "name2");
-        click(By.name("address"));
-        type(By.name("address"), "address");
-        click(By.name("home"));
-        type(By.name("home"), "8888");
-        click(By.name("email"));
-        type(By.name("email"), "mail@mail.ru");
-        click(By.name("theform"));
+    }
+
+    public void submitContactCreation() {
         click(By.cssSelector("input:nth-child(75)"));
-        click(By.linkText("home page"));
     }
 
     public void initContactModification(int index) {
@@ -110,7 +123,8 @@ public class ContactHelper extends HelperBase {
     }
 
     private void fillContactForm(ContactData contact) {
-        click(By.name("firstname"));
         type(By.name("firstname"), contact.firstname());
+        type(By.name("lastname"), contact.lastname());
+        attach(By.name("photo"), contact.photo());
     }
 }
