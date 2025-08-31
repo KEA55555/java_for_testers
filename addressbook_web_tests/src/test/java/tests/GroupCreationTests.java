@@ -59,7 +59,7 @@ public class GroupCreationTests extends TestBase {
                 .withFooter(CommonFunctions.randomString(30)));
     }
 
-        @ParameterizedTest
+    @ParameterizedTest
     @MethodSource("singleProviderGroup")
     public void canCreateGroups(GroupData group) {
         var oldGroups = app.hbm().getGroupList();

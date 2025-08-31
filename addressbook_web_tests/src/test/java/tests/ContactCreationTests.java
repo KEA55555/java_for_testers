@@ -99,7 +99,6 @@ public class ContactCreationTests extends TestBase {
         var oldRelated = app.hbm().getContactsInGroup(group);
         app.contacts().createContact(contact, group);
         var newRelated = app.hbm().getContactsInGroup(group);
-        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size()); //сделать более сложную проверку проверять не только размер, но и содержимое, ассерты не надо?
-        //как сравниваются полные списки групп и контактов после создания
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }
 }
