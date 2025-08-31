@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 
 import java.nio.file.Paths;
+import java.util.Map;
 
 public class HelperBase {
 
@@ -34,7 +35,7 @@ public class HelperBase {
         }
     }
 
-        protected void attach(By locator, String file) {
-                manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
-            }
+    protected void attach(By locator, String file) {
+        manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
     }
+}

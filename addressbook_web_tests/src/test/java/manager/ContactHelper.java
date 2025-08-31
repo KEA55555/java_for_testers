@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.Select;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.openqa.selenium.By.id;
+
 public class ContactHelper extends HelperBase {
 
     public ContactHelper(ApplicationManager manager) {
@@ -78,7 +80,7 @@ public class ContactHelper extends HelperBase {
     }
 
     private void selectAllContacts() {
-        var checkboxes = manager.driver.findElements(By.id("MassCB"));
+        var checkboxes = manager.driver.findElements(id("MassCB"));
         for (var selectAll : checkboxes) {
             selectAll.click();
         }
@@ -125,5 +127,36 @@ public class ContactHelper extends HelperBase {
     private void fillContactForm(ContactData contact) {
         type(By.name("firstname"), contact.firstname());
         type(By.name("lastname"), contact.lastname());
+    }
+
+    public void addContactInGroup(List<ContactData> contacts, GroupData group) {
+        openHomePage();
+        selectContactById(contacts.get(0).id());
+        selectGroupFromDropdown(Integer.parseInt(group.id()));
+        addToGroup();
+    }
+
+    private void selectGroupFromDropdown(int groupId) {
+        click(By.name("to_group"));
+        click(By.cssSelector("select[name='to_group'] option[value='" + groupId + "']"));
+    }
+
+    private void addToGroup() {
+        click(By.name("add"));
+    }
+
+    public void deleteContactFromGroup(ContactData contact, GroupData group) {
+        openHomePage();
+        selectDropdown(group.id());
+        selectContactById(contact.id());
+        removeFromGroup(group.name());
+    }
+
+    private void removeFromGroup(String groupName) {
+        click(By.xpath("//input[@name='remove' and contains(@value, 'Remove from')]"));
+    }
+
+    private void selectDropdown(String groupId) {
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(groupId);
     }
 }
