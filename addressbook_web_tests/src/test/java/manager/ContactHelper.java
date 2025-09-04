@@ -102,10 +102,14 @@ public class ContactHelper extends HelperBase {
                 var id = checkbox.getAttribute("value");
                 var lastname = tds.get(1).getText();
                 var firstname = tds.get(2).getText();
+                var address = tds.get(3).getText();
+                var email = tds.get(4).getText();
                 contacts.add(new ContactData()
                         .withId(id)
                         .withFirstName(firstname)
-                        .withLastName(lastname));
+                        .withLastName(lastname)
+                        .withAddress(address)
+                        .withEmail(email));
             }
         }
         return contacts;
@@ -119,7 +123,7 @@ public class ContactHelper extends HelperBase {
         returnToHomePage();
     }
 
-    private void returnToHomePage() {
+    public void returnToHomePage() {
         click(By.linkText("home"));
     }
 
@@ -198,5 +202,12 @@ public class ContactHelper extends HelperBase {
             result.put(id, email);
         }
         return result;
+    }
+
+    public ContactData getContactModificationForm() {
+        String address =  manager.driver.findElement(By.name("address")).getAttribute("value");
+        String email = manager.driver.findElement(By.name("email")).getAttribute("value");
+        String email2 = manager.driver.findElement(By.name("email2")).getAttribute("value");
+        return new ContactData().withAddress(address).withEmail(email).withEmail2(email2);
     }
 }

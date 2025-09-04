@@ -13,47 +13,71 @@ public class ContactInfoTests extends TestBase {
     void testPhones() {
         if (app.hbm().getContactCount() == 0) {
             app.hbm().createContact(new ContactData("", "Иван",
-                    "middlename", "Петров", "", "address11", "email11", "", "7878", "5533", "1122", ""));
+                    "Иванович", "Петров", "", "Москва", "email22", "email567", "", "5533", "1122", "7878", ""));
         }
         var contacts = app.hbm().getContactList();
         var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contact ->
-            Stream.of(contact.home(), contact.mobile(), contact.work(), contact.secondary())
-                  .filter(s -> s != null && ! "".equals(s))
-                    .collect(Collectors.joining("\n"))
+                Stream.of(contact.home(), contact.mobile(), contact.work(), contact.secondary())
+                        .filter(s -> s != null && !"".equals(s))
+                        .collect(Collectors.joining("\n"))
         ));
         var phones = app.contacts().getPhones();
-            Assertions.assertEquals(expected, phones);
-        }
+        Assertions.assertEquals(expected, phones);
+    }
 
     @Test
     void testAddress() {
         if (app.hbm().getContactCount() == 0) {
             app.hbm().createContact(new ContactData("", "Иван",
-                    "middlename", "Петров", "", "address11", "email11", "", "7878", "5533", "1122", ""));
+                    "Иванович", "Петров", "", "Москва", "email22", "email567", "", "5533", "1122", "7878", ""));
         }
-        var contacts = app.hbm().getContactList();
-        var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contact ->
+        var contacts = app.contacts().getList();
+        var contactHomePage = contacts.stream().limit(1).collect(Collectors.toMap(ContactData::id, contact ->
                 Stream.of(contact.address())
-                        .filter(s -> s != null && ! "".equals(s))
+                        .filter(s -> s != null && !s.isEmpty())
                         .collect(Collectors.joining("\n"))
         ));
-        var address = app.contacts().getAddress();
-        Assertions.assertEquals(expected, address);
+        app.contacts().initContactModification(0);
+
+        var getContactModificationForm = app.contacts().getContactModificationForm();
+        var contactModificationForm = contacts.stream()
+                .filter(contact -> contactHomePage.containsKey(contact.id()))
+                .collect(Collectors.toMap(ContactData::id, contact -> {
+                            ContactData addressForm = app.contacts().getContactModificationForm();
+                            return Stream.of(addressForm.address())
+                                    .filter(s -> s != null && !s.isEmpty())
+                                    .collect(Collectors.joining("\n"));
+                        }
+                ));
+        Assertions.assertEquals(contactHomePage, contactModificationForm);
     }
 
     @Test
     void testEmail() {
         if (app.hbm().getContactCount() == 0) {
             app.hbm().createContact(new ContactData("", "Иван",
-                    "middlename", "Петров", "", "address11", "email11", "", "7878", "5533", "1122", ""));
+                    "Иванович", "Петров", "", "Москва", "email22", "email567", "", "5533", "1122", "7878", ""));
         }
-        var contacts = app.hbm().getContactList();
-        var expected = contacts.stream().collect(Collectors.toMap(ContactData::id, contact ->
+        var contacts = app.contacts().getList();
+        var contactHomePage = contacts.stream().limit(1).collect(Collectors.toMap(ContactData::id, contact ->
                 Stream.of(contact.email())
-                        .filter(s -> s != null && ! "".equals(s))
+                        .filter(s -> s != null && !s.isEmpty())
                         .collect(Collectors.joining("\n"))
         ));
-        var email = app.contacts().getEmail();
-        Assertions.assertEquals(expected, email);
+        app.contacts().initContactModification(0);
+
+        var getContactModificationForm = app.contacts().getContactModificationForm();
+        var contactModificationForm = contacts.stream()
+                .filter(contact -> contactHomePage.containsKey(contact.id()))
+                .collect(Collectors.toMap(ContactData::id, contact -> {
+                            ContactData emailForm = app.contacts().getContactModificationForm();
+                            return Stream.of(emailForm.email(), emailForm.email2())
+                                    .filter(s -> s != null && !s.isEmpty())
+                                    .collect(Collectors.joining("\n"));
+                        }
+                ));
+        app.contacts().returnToHomePage();
+
+        Assertions.assertEquals(contactHomePage, contactModificationForm);
     }
-    }
+}

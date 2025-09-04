@@ -13,7 +13,8 @@ public class GroupActions extends TestBase {
     @Test
     void addContactInGroup() {
         if (app.hbm().getContactCount() == 0) {
-            app.hbm().createContact(new ContactData("", "FirstName", "", "LastName", "", "sity", "", "", "7777", "", "", "")); //предусловие
+            app.hbm().createContact(new ContactData("", "Иван",
+                    "Иванович", "Петров", "", "Москва", "email22", "email567", "", "5533", "1122", "7878", ""));
         }
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer")); //предусловие
@@ -37,7 +38,8 @@ public class GroupActions extends TestBase {
     @Test
     void deleteContactFromGroup() {
         if (app.hbm().getContactCount() == 0) {
-            app.hbm().createContact(new ContactData("", "FirstName", "", "LastName", "", "sity", "", "", "7777", "", "", "")); //предусловие
+            app.hbm().createContact(new ContactData("", "Иван",
+                    "Иванович", "Петров", "", "Москва", "email22", "email567", "", "5533", "1122", "7878", ""));
         }
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer")); //предусловие

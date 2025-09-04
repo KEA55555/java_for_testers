@@ -27,18 +27,30 @@ public class ContactRecord {
 
     public String phone2;
 
+    public String email;
+
+    public String email2;
+
+    public String company = "";
+    public String title = "";
+    public String fax = "";
+    public String email3 = "";
+    public String homepage = "";
+
+
 //        public Date deprecated = new Date();
 
     public ContactRecord() {
     }
 
-    public ContactRecord(int id, String firstname, String middlename, String lastname, String nickname, String address) {
+    public ContactRecord(int id, String firstname, String middlename, String lastname, String nickname, String address, String email, String email2) {
         this.id = id;
         this.firstname = firstname;
         this.middlename = middlename;
         this.nickname = nickname;
         this.lastname = lastname;
         this.address = address;
-
+        this.email = email;
+        this.email2 = email2;
     }
 }
