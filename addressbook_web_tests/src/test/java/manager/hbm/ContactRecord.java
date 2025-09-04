@@ -2,31 +2,43 @@ package manager.hbm;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.List;
-
 @Entity
-    @Table(name = "addressbook")
-    public class ContactRecord {
+@Table(name = "addressbook")
+public class ContactRecord {
 
-        @Id
-        public int id;
+    @Id
+    public int id;
 
-        public String firstname;
+    public String firstname;
 
-        public String lastname;
+    public String middlename;
 
-        public String address;
+    public String lastname;
+
+    public String nickname;
+
+    public String address;
+
+    public String home;
+
+    public String mobile;
+
+    public String work;
+
+    public String phone2;
 
 //        public Date deprecated = new Date();
 
-        public ContactRecord() {
-        }
-
-        public ContactRecord(int id, String firstname, String lastname, String address) {
-            this.id = id;
-            this.firstname = firstname;
-            this.lastname = lastname;
-            this.address = address;
-        }
+    public ContactRecord() {
     }
+
+    public ContactRecord(int id, String firstname, String middlename, String lastname, String nickname, String address) {
+        this.id = id;
+        this.firstname = firstname;
+        this.middlename = middlename;
+        this.nickname = nickname;
+        this.lastname = lastname;
+        this.address = address;
+
+    }
+}

@@ -3,15 +3,22 @@ package ru.stqa.addressbook.common;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.google.common.io.ByteStreams.limit;
 
 public class CommonFunctions {
 
     public static String randomString(int n) {
         var rnd = new Random();
-        var result = "";
-        for (int i = 0; i < n; i++) {
-            result = result + (char) ('a' + rnd.nextInt(26)); //символ a, 'a' + 1 = b
-        }
+        Supplier<Integer> randomNumbers = () -> rnd.nextInt(26);
+        var result = Stream.generate(randomNumbers)
+                .limit(n)
+                .map(integer -> 'a' + integer)
+                .map(Character::toString)
+                .collect(Collectors.joining());
             return result;
         }
 
