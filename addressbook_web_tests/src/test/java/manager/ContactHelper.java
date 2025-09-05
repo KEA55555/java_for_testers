@@ -63,7 +63,18 @@ public class ContactHelper extends HelperBase {
     }
 
     private void selectContactById(String id) {
-        click(By.cssSelector("input[value='" + id + "']"));
+        var trs = manager.driver.findElements(By.cssSelector("tr[name='entry']"));
+        for (var tr : trs) {
+            var tds = tr.findElements(By.tagName("td"));
+            if (tds.size() >= 3) {
+                var checkbox = tds.get(0).findElement(By.name("selected[]"));
+                var contactId = checkbox.getAttribute("value");
+                if (id.equals(contactId)) {
+                    checkbox.click();
+                    break;
+                }
+            }
+        }
     }
 
     public int getCount() {
@@ -136,9 +147,9 @@ public class ContactHelper extends HelperBase {
         type(By.name("lastname"), contact.lastname());
     }
 
-    public void addContactInGroup(List<ContactData> contacts, GroupData group) {
+     public void addContactInGroup(ContactData contact, GroupData group) {
         openHomePage();
-        selectContactById(contacts.get(0).id());
+        selectContactById(contact.id());
         selectGroupFromDropdown(Integer.parseInt(group.id()));
         addToGroup();
     }
