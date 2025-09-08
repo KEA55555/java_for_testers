@@ -63,18 +63,8 @@ public class ContactHelper extends HelperBase {
     }
 
     private void selectContactById(String id) {
-        var trs = manager.driver.findElements(By.cssSelector("tr[name='entry']"));
-        for (var tr : trs) {
-            var tds = tr.findElements(By.tagName("td"));
-            if (tds.size() >= 3) {
-                var checkbox = tds.get(0).findElement(By.name("selected[]"));
-                var contactId = checkbox.getAttribute("value");
-                if (id.equals(contactId)) {
-                    checkbox.click();
-                    break;
-                }
-            }
-        }
+        var checkbox = manager.driver.findElement(By.cssSelector("tr[name='entry'] input[name='selected[]'][value='" + id + "']"));
+        checkbox.click();
     }
 
     public int getCount() {
