@@ -16,6 +16,9 @@ import static org.openqa.selenium.By.id;
 
 public class ContactHelper extends HelperBase {
 
+    private ContactData selectedContact = null;
+    private GroupData selectedGroup = null;
+
     public ContactHelper(ApplicationManager manager) {
         super(manager);
     }
@@ -210,5 +213,81 @@ public class ContactHelper extends HelperBase {
         String email = manager.driver.findElement(By.name("email")).getAttribute("value");
         String email2 = manager.driver.findElement(By.name("email2")).getAttribute("value");
         return new ContactData().withAddress(address).withEmail(email).withEmail2(email2);
+    }
+
+        public void selectContactAndGroup() {
+        createContactAndGroup();
+        var contacts = manager.hbm().getContactList();
+        var groups = manager.hbm().getGroupList();
+
+        selectedContact = null;
+        selectedGroup = null;
+
+        for (var group : groups) {
+            var contactsInGroups = manager.hbm().getContactsInGroup(group);
+            for (var contact : contacts) {
+                if (!contactsInGroups.contains(contact)) {
+                    selectedContact = contact;
+                    selectedGroup = group;
+                    return;
+                }
+            }
+        }
+        if (selectedContact == null) {
+            manager.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+            var updatedGroups = manager.hbm().getGroupList();
+            selectedGroup = updatedGroups.get(updatedGroups.size() - 1);
+            selectedContact = contacts.get(0);
+        }
+    }
+
+    public void selectContactAndGroupForDelete() {
+        createContactAndGroup();
+        var contacts = manager.hbm().getContactList();
+        var groups = manager.hbm().getGroupList();
+
+        selectedContact = null;
+        selectedGroup = null;
+
+        for (var group : groups) {
+            var contactsInGroups = manager.hbm().getContactsInGroup(group);
+            if (!contactsInGroups.isEmpty()) {
+                selectedContact = contactsInGroups.get(0);
+                selectedGroup = group;
+                return;
+            }
+        }
+        if (selectedContact == null) {
+            manager.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+            var updatedGroups = manager.hbm().getGroupList();
+            selectedGroup = updatedGroups.get(updatedGroups.size() - 1);
+            selectedContact = contacts.get(0);
+            manager.contacts().addContactInGroup(selectedContact, selectedGroup);
+        }
+    }
+
+        public GroupData getSelectedGroup() {
+        if (selectedGroup == null) {
+            throw new IllegalStateException("Первым должен запускаться selectContactAndGroup() или selectContactAndGroupForDelete()");
+        }
+        return selectedGroup;
+    }
+
+    private void createContactAndGroup() {
+        if (manager.hbm().getContactCount() == 0) {
+            manager.hbm().createContact(new ContactData("", "Иван",
+                    "Иванович", "Петров", "", "Москва", "email22",
+                    "email567", "", "5533", "1122", "7878", ""));
+        }
+        if (manager.hbm().getGroupCount() == 0) {
+            manager.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+    }
+
+    public ContactData getSelectedContact() {
+        if (selectedContact == null) {
+            throw new IllegalStateException("Первым должен запускаться selectContactAndGroup() или selectContactAndGroupForDelete()");
+        }
+        return selectedContact;
     }
 }
