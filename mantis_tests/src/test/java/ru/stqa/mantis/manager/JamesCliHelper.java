@@ -1,6 +1,8 @@
 package ru.stqa.mantis.manager;
 
-import java.io.IOException;
+import org.openqa.selenium.os.ExternalProcess;
+
+import java.time.Duration;
 
 
 public class JamesCliHelper extends HelperBase {
@@ -9,21 +11,13 @@ public class JamesCliHelper extends HelperBase {
         super(manager);
     }
 
-    public void addUser(String email, String password) throws InterruptedException, IOException {
-//        CommandLine cmd = new CommandLine(
-//                "java", "-cp", "\"james-server-jpa-app.lib/*\"",
-//                "org.apache.james.cli.ServerCmd",
-//                "AddUser", email, password);
-//        cmd.execute();
-//        cmd.waitFor();
-//        try {
-        Process command = new ProcessBuilder(
-                "java", "-cp", "james-server-jpa-app.lib/*",
-                "org.apache.james.cli.ServerCmd", "AddUser", email, password)
-                .start();
-        command.waitFor();
-
-//        } catch (IOException | InterruptedException e) {
-//            throw new RuntimeException("Failed to add user: " + email, e);
+    public void addUser(String email, String password) throws InterruptedException {
+        ExternalProcess.builder()
+                .command("java", "-cp", "\"james-server-jpa-app.lib/*\"",
+                        "org.apache.james.cli.ServerCmd", "AddUser", email, password)
+                .directory("C:/Users/v-i-n/james-server-jpa-guice")
+                .copyOutputTo(System.err)
+                .start()
+                .waitFor(Duration.ofHours(1));
     }
 }
