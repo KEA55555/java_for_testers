@@ -23,6 +23,8 @@ public class ApplicationManager {
 
     private MailHelper mailHelper;
 
+    private RegistrationHelper registrationHelper;
+
     public void init(String browser, Properties properties) {
         this.string = browser;
         this.properties = properties;
@@ -74,5 +76,12 @@ public class ApplicationManager {
             mailHelper = new MailHelper(this);
         }
         return mailHelper;
+    }
+
+    public RegistrationHelper registration() {
+        if (registrationHelper == null) {
+            registrationHelper = new RegistrationHelper(this);
+        }
+        return registrationHelper;
     }
 }

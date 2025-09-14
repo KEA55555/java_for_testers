@@ -42,7 +42,7 @@ public class MailHelper extends HelperBase {
                 throw new RuntimeException(e);
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(60000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -63,9 +63,9 @@ public class MailHelper extends HelperBase {
 
     }
 
-    public void drain(String username, String password) {
+    public void drain(String email, String password) {
         try {
-            var inbox = getInbox(username, password);
+            var inbox = getInbox(email, password);
             inbox.open(Folder.READ_WRITE);
             Arrays.stream(inbox.getMessages()).forEach(m -> {
                 try {

@@ -1,9 +1,12 @@
 package ru.stqa.mantis.manager;
 
 import okhttp3.*;
+import org.openqa.selenium.Cookie;
 
 import java.io.IOException;
 import java.net.CookieManager;
+import java.net.HttpCookie;
+import java.util.Set;
 
 public class HttpSessionHelper extends HelperBase {
 
@@ -41,5 +44,24 @@ public class HttpSessionHelper extends HelperBase {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void syncCookiesFromBrowser() {
+        Set<Cookie> browserCookies = manager.driver().manage().getCookies();
+        CookieManager cookieManager = new CookieManager();
+        try {
+            for (org.openqa.selenium.Cookie browserCookie : browserCookies) {
+                HttpCookie httpCookie = new HttpCookie(browserCookie.getName(), browserCookie.getValue());
+                httpCookie.setDomain(browserCookie.getDomain());
+                httpCookie.setPath(browserCookie.getPath());
+                httpCookie.setSecure(browserCookie.isSecure());
+                cookieManager.getCookieStore().add(null, httpCookie);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        client = new OkHttpClient.Builder()
+                .cookieJar(new JavaNetCookieJar(cookieManager))
+                .build();
     }
 }
