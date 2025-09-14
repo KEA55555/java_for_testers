@@ -20,7 +20,7 @@ public class RegistrationHelper extends HelperBase {
         String email = String.format("%s@localhost", CommonFunctions.randomString(8));
         this.registeredUser = username;
 
-        manager.jamesCli().addUser(email, "password");
+        manager.jamesApi().addUser(email, "password"); //здесь поменяла Cli на Api
         manager.mail().drain(email, "password");
         signupForNewAccount(username, email);
 
