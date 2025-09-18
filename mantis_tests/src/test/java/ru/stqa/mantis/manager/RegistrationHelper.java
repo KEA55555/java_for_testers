@@ -23,6 +23,7 @@ public class RegistrationHelper extends HelperBase {
         manager.jamesApi().addUser(email, "password"); //здесь поменяла Cli на Api
         manager.mail().drain(email, "password");
         signupForNewAccount(username, email);
+        manager.registration().signupForNewAccount(username, email);
 
         var messages = manager.mail().receive(email, "password", Duration.ofSeconds(60));
         var text = messages.get(0).content();
