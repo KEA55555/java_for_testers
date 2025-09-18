@@ -6,7 +6,9 @@ import io.swagger.client.Configuration;
 import io.swagger.client.api.IssuesApi;
 import io.swagger.client.api.UserApi;
 import io.swagger.client.auth.ApiKeyAuth;
-import io.swagger.client.model.*;
+import io.swagger.client.model.Identifier;
+import io.swagger.client.model.Issue;
+import io.swagger.client.model.User;
 import org.junit.jupiter.api.Assertions;
 import ru.stqa.mantis.common.CommonFunctions;
 import ru.stqa.mantis.model.IssueData;
@@ -17,6 +19,7 @@ import java.util.regex.Pattern;
 
 public class RestApiHelper extends HelperBase {
 
+    private String сreatedUsername;
 
     public RestApiHelper(ApplicationManager manager) {
         super(manager);
@@ -52,12 +55,11 @@ public class RestApiHelper extends HelperBase {
         String email = String.format("%s@localhost", CommonFunctions.randomString(8));
         String realName = username;
         String password = "password";
+        this.сreatedUsername = username;
 
-        //регистрируем почту
         manager.jamesApi().addUser(email, password);
         manager.mail().drain(email, password);
 
-        //регистрируем пользователя в мантис через rest
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
@@ -71,7 +73,6 @@ public class RestApiHelper extends HelperBase {
             throw new RuntimeException(e);
         }
 
-        //извлекаем ссылку из письма
         var messages = manager.mail().receive(email, "password", Duration.ofSeconds(60));
         var text = messages.get(0).content();
         var pattern = Pattern.compile("http://\\S*");
@@ -80,18 +81,20 @@ public class RestApiHelper extends HelperBase {
         if (matcher.find()) {
             url = text.substring(matcher.start(), matcher.end());
             System.out.println(url);
-
         }
         Assertions.assertNotNull(url, "URL not found");
         manager.driver().get(url);
 
         UserData userData = new UserData(username, password, realName, email);
 
-        // Вызов метода из RegistrationHelper
         manager.registration().completedRegistration(
                 userData.realName(),
                 userData.password(),
                 userData.password()
         );
+    }
+
+    public String getCreatedUsername() {
+        return сreatedUsername;
     }
 }

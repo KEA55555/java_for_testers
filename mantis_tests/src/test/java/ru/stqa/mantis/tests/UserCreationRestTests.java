@@ -10,7 +10,7 @@ public class UserCreationRestTests extends TestBase {
     void canCreateUserRest() throws InterruptedException {
         app.rest().createUser();
         app.http().syncCookiesFromBrowser();
-        String username = app.registration().getRegisteredUser();
+        String username = app.rest().getCreatedUsername();
         String password = "password";
         app.http().login(username, password);
         Assertions.assertTrue(app.http().isLogged());
